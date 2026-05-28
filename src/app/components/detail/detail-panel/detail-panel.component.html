@@ -1,0 +1,186 @@
+<div class="detail-panel">
+
+  @if (vm(); as v) {
+    @if (v.node; as node) {
+      <div class="detail-scroll">
+
+        <app-detail-hero [node]="node" [parentTitle]="v.parentTitle" />
+
+        <div class="detail-body">
+
+          @if (node.type !== 'title') {
+            <div class="node-subheader">
+              <p-tag [value]="node.type === 'season' ? 'Season' : 'Episode'"
+                     [severity]="node.type === 'season' ? 'warn' : 'contrast'"
+                     class="type-badge" />
+              <span class="subheader-meta">
+                @if (node.type === 'season') {
+                  {{ seasonNumber(node) != null ? 'Season ' + seasonNumber(node) : '' }}
+                  @if (episodeCount(node) != null) { · {{ episodeCount(node) }} Episodes }
+                }
+                @if (node.type === 'episode') {
+                  S{{ seasonNumber(node) }} · Ep {{ formatEpisodeNumber(node) }}
+                }
+              </span>
+                  @if (v.parentTitle) {
+                <span class="subheader-divider">·</span>
+                <button type="button" class="parent-link" (click)="selectNode(v.parentTitle)">
+                  {{ v.parentTitle.name }}
+                </button>
+              }
+            </div>
+          }
+
+          <div class="node-actions">
+            @if (node.type === 'title') {
+              <button type="button" class="action-btn action-btn--add" (click)="onAdd()">
+                <i class="material-icons">add</i> Add Season
+              </button>
+            }
+            @if (node.type === 'season') {
+              <button type="button" class="action-btn action-btn--add" (click)="onAdd()">
+                <i class="material-icons">add</i> Add Episode
+              </button>
+            }
+            <button type="button" class="action-btn action-btn--delete" (click)="onDelete()">
+              <i class="material-icons">delete</i>
+              @if (node.type === 'title') { Delete Title }
+              @else if (node.type === 'season') { Delete This Season }
+              @else { Delete Episode }
+            </button>
+          </div>
+
+          <div class="body-layout" [class.body-layout--wide]="node.type === 'episode'">
+
+            <div class="body-left">
+
+              @if (description(node); as desc) {
+                <p class="description">{{ desc }}</p>
+              }
+
+              @if (node.type === 'title') {
+                <div class="episode-section">
+                  <div class="episode-list-header">
+                    <h3 class="episode-list-title">Seasons</h3>
+                    @if (v.seasonList.length > 0) {
+                      <span class="episode-count">{{ v.seasonList.length }} seasons</span>
+                    }
+                  </div>
+                  <div class="episode-divider"></div>
+                  @if (v.seasonList.length > 0) {
+                    @for (season of v.seasonList; track season.id) {
+                      <div class="episode-card" (click)="selectNode(season)">
+                        <div class="ep-thumb">
+                          <img [src]="getThumbnail(season)" [alt]="season.name" class="ep-img" loading="lazy" (error)="onImgError($event)">
+                          <div class="ep-overlay">
+                            <i class="material-icons ep-play-icon">play_arrow</i>
+                          </div>
+                        </div>
+                        <div class="ep-info">
+                          <div class="ep-title-row">
+                            <span class="ep-name">{{ season.name }}</span>
+                          </div>
+                          @if (seasonNumber(season); as sn) {
+                            <p class="ep-date">Season {{ sn }}</p>
+                          }
+                        </div>
+                        <div class="ep-num">
+                          {{ episodeCount(season) ?? 0 }} ep.
+                          <button type="button" class="card-delete" (click)="$event.stopPropagation(); onDeleteChild(season)">
+                            <i class="material-icons">delete</i>
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  } @else {
+                    <div class="empty-episodes">
+                      <i class="material-icons empty-ep-icon">hourglass_empty</i>
+                      <p class="empty-ep-text">No seasons available</p>
+                    </div>
+                  }
+                </div>
+              }
+
+              @if (node.type === 'season') {
+                <div class="episode-section">
+                  <div class="episode-list-header">
+                    <h3 class="episode-list-title">Episodes</h3>
+                    @if (v.episodeList.length > 0) {
+                      <span class="episode-count">{{ v.episodeList.length }} episodes</span>
+                    }
+                  </div>
+                  <div class="episode-divider"></div>
+                  @if (v.episodeList.length > 0) {
+                    @for (ep of v.episodeList; track ep.id) {
+                      <div class="episode-card" (click)="selectNode(ep)">
+                        <div class="ep-thumb">
+                          <img [src]="getThumbnail(ep)" [alt]="ep.name" class="ep-img" loading="lazy" (error)="onImgError($event)">
+                          <div class="ep-overlay">
+                            <i class="material-icons ep-play-icon">play_arrow</i>
+                          </div>
+                        </div>
+                        <div class="ep-info">
+                          <div class="ep-title-row">
+                            <span class="ep-name">{{ ep.name }}</span>
+                          </div>
+                          @if (description(ep); as desc) {
+                            <p class="ep-desc">{{ desc }}</p>
+                          }
+                        </div>
+                        <div class="ep-num">
+                           {{ formatEpisodeNumber(ep) }}
+                          <button type="button" class="card-delete" (click)="$event.stopPropagation(); onDeleteChild(ep)">
+                            <i class="material-icons">delete</i>
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  } @else {
+                    <div class="empty-episodes">
+                      <i class="material-icons empty-ep-icon">hourglass_empty</i>
+                      <p class="empty-ep-text">Not available yet! Coming soon!</p>
+                    </div>
+                  }
+                </div>
+              }
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+
+      @if (showModal()) {
+        <app-add-node-modal
+          [nodeType]="modalNodeType()"
+          [defaultNumber]="modalDefaultNumber()"
+          [defaultName]="modalDefaultName()"
+          (confirmed)="onAddConfirmed($event)"
+          (dismissed)="onAddDismissed()"
+        />
+      }
+
+      @if (showConfirm()) {
+        <app-confirm-modal
+          [title]="confirmTitle()"
+          [message]="confirmMessage()"
+          (confirmed)="onDeleteConfirmed()"
+          (dismissed)="onDeleteDismissed()"
+        />
+      }
+
+    } @else {
+      <div class="empty-state">
+        <img src="/logo.png" alt="Logo" class="empty-logo">
+        <h3 class="empty-title">Select something to watch</h3>
+        <p class="empty-sub">
+          Choose a title, season, or episode from your library to see details.
+        </p>
+      </div>
+    }
+  }
+
+</div>

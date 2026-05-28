@@ -1,0 +1,82 @@
+<div class="ti-wrapper">
+  <div
+    class="ti-row"
+    role="treeitem"
+    [class.ti-row--selected]="isSelected"
+    [class.ti-row--title]="node().type === 'title'"
+    [class.ti-row--season]="node().type === 'season'"
+    [class.ti-row--episode]="node().type === 'episode'"
+    [style.paddingLeft.px]="8"
+    [attr.aria-expanded]="hasChildren ? (isExpanded ? 'true' : 'false') : null"
+    [attr.aria-selected]="isSelected ? 'true' : 'false'"
+    [attr.aria-level]="depth() + 1"
+    (click)="onSelect()"
+    (dblclick)="startEdit($event)"
+  >
+    @if (isSelected) {
+      <span class="ti-bar"></span>
+    }
+
+    <button type="button" class="ti-chevron" (click)="onToggle($event)" aria-label="Toggle expand">
+      @if (hasChildren) {
+        <span class="material-icons ti-chevron-icon">
+          {{ isExpanded ? 'expand_more' : 'chevron_right' }}
+        </span>
+      } @else {
+        <span class="ti-chevron-empty"></span>
+      }
+    </button>
+
+    @if (editing) {
+      <input
+        class="ti-input"
+        [value]="editName"
+        (input)="editName = $any($event.target).value"
+        (keydown.enter)="commitEdit()"
+        (keydown.escape)="cancelEdit()"
+        (blur)="commitEdit()"
+        autofocus
+        (click)="$event.stopPropagation()"
+      />
+    } @else {
+      <span class="ti-name">{{ node().name }}</span>
+    }
+
+    <span class="ti-icon" [class.icon-title]="node().type === 'title'" [class.icon-season]="node().type === 'season'" [class.icon-episode]="node().type === 'episode'">
+      <span class="material-icons ti-icon-symbol">{{ node().icon }}</span>
+    </span>
+
+    @if (editMode()) {
+      <span class="ti-actions">
+        @if (node().type !== 'episode') {
+          <button type="button" class="ti-action-btn" (click)="onAdd($event)" aria-label="Add child">
+            <i class="material-icons">add</i>
+          </button>
+        }
+        <button type="button" class="ti-action-btn ti-action-btn--delete" (click)="onDelete($event)" aria-label="Delete">
+          <i class="material-icons">delete_outline</i>
+        </button>
+      </span>
+    }
+  </div>
+
+  @if (isExpanded && hasChildren) {
+    <div class="ti-children">
+      @for (child of node().children; track trackById($index, child)) {
+        <app-tree-item
+          [node]="child"
+          [depth]="depth() + 1"
+          [expandedIds]="expandedIds()"
+          [selectedId]="selectedId()"
+          [searchActive]="searchActive()"
+          [editMode]="editMode()"
+          (nodeSelected)="nodeSelected.emit($event)"
+          (nodeToggled)="nodeToggled.emit($event)"
+          (nodeAdd)="nodeAdd.emit($event)"
+          (nodeDelete)="nodeDelete.emit($event)"
+          (nodeRename)="nodeRename.emit($event)"
+        />
+      }
+    </div>
+  }
+</div>

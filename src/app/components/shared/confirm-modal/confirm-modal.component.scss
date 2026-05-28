@@ -1,0 +1,11 @@
+@use '../styles/modal' as *;
+
+.modal-btn--danger {
+  background: #f87171;
+  color: #000;
+  border-color: #f87171;
+
+  &:hover {
+    background: #ef4444;
+  }
+}

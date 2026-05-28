@@ -1,0 +1,59 @@
+<div class="modal-overlay" (click)="cancel()" (keydown.escape)="cancel()">
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="add-modal-title" (click)="$event.stopPropagation()">
+    <h3 class="modal-title" id="add-modal-title">{{ title }}</h3>
+    <p class="modal-hint">{{ hint }}</p>
+
+    <label class="modal-label" for="add-name">Name</label>
+    <input
+      id="add-name"
+      type="text"
+      class="modal-input"
+      [(ngModel)]="nodeName"
+      (keydown.enter)="confirm()"
+      placeholder="Enter name…"
+      autofocus
+    />
+
+    @if (showNumber) {
+      <label class="modal-label" for="add-number">Number</label>
+      <input
+        id="add-number"
+        type="number"
+        class="modal-input"
+        [(ngModel)]="nodeNumber"
+        (keydown.enter)="confirm()"
+        placeholder="Leave empty for auto"
+        min="1"
+      />
+    }
+
+    <label class="modal-label" for="add-icon">Icon</label>
+    <select
+      id="add-icon"
+      class="modal-input modal-select"
+      [(ngModel)]="selectedIcon"
+    >
+      @for (icon of icons; track icon) {
+        <option [value]="icon">
+          {{ iconLabel(icon) }}
+        </option>
+      }
+    </select>
+
+    <label class="modal-label" for="add-description">Description</label>
+    <textarea
+      id="add-description"
+      class="modal-textarea"
+      [(ngModel)]="nodeDescription"
+      placeholder="Enter description…"
+      rows="3"
+    ></textarea>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn modal-btn--cancel" (click)="cancel()">Cancel</button>
+      <button type="button" class="modal-btn modal-btn--confirm" (click)="confirm()" [disabled]="!nodeName.trim()">
+        Add
+      </button>
+    </div>
+  </div>
+</div>

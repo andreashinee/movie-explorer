@@ -1,0 +1,58 @@
+:root {
+  --p-primary-50: #ffeaec;
+  --p-primary-100: #ffd5d9;
+  --p-primary-200: #ffabb3;
+  --p-primary-300: #ff808c;
+  --p-primary-400: #ff3d49;
+  --p-primary-500: #e50914;
+  --p-primary-600: #cc0812;
+  --p-primary-700: #b30710;
+  --p-primary-800: #99060d;
+  --p-primary-900: #80050b;
+  --p-primary-950: #66040a;
+
+  --p-primary-color: #e50914;
+  --p-primary-contrast-color: #ffffff;
+  --p-primary-hover-color: #ff1f2b;
+  --p-primary-active-color: #cc0812;
+
+  --p-highlight-background: rgba(229, 9, 20, 0.18);
+  --p-highlight-focus-background: rgba(229, 9, 20, 0.28);
+  --p-highlight-color: #ffffff;
+  --p-highlight-focus-color: #ffffff;
+
+  --p-surface-0: #141414;
+  --p-surface-50: #1c1c1c;
+  --p-surface-100: #222222;
+  --p-surface-200: #2a2a2a;
+  --p-surface-300: #333333;
+  --p-surface-400: #404040;
+  --p-surface-500: #555555;
+  --p-surface-600: #737373;
+  --p-surface-700: #a3a3a3;
+  --p-surface-800: #d4d4d4;
+  --p-surface-900: #e5e5e5;
+  --p-surface-950: #f5f5f5;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: #141414;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.detail-area {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  background: #141414;
+}

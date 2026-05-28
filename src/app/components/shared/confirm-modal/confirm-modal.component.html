@@ -1,0 +1,10 @@
+<div class="modal-overlay" (click)="cancel()" (keydown.escape)="cancel()">
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title" (click)="$event.stopPropagation()">
+    <h3 class="modal-title" id="confirm-modal-title">{{ title() }}</h3>
+    <p class="modal-hint">{{ message() }}</p>
+    <div class="modal-actions">
+      <button type="button" class="modal-btn modal-btn--cancel" (click)="cancel()">Cancel</button>
+      <button type="button" class="modal-btn modal-btn--danger" (click)="confirm()">Delete</button>
+    </div>
+  </div>
+</div>

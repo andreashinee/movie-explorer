@@ -1,0 +1,159 @@
+.ti-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 34px;
+  padding-right: 6px;
+  cursor: pointer;
+  user-select: none;
+  color: #7a7a7a;
+  transition: background 0.08s, color 0.08s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+  }
+
+  &--selected {
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+  }
+
+  &--title {
+    color: #cccccc;
+
+    .ti-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #cccccc;
+    }
+  }
+
+  &--season .ti-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #999;
+  }
+
+  &--episode .ti-name {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #7a7a7a;
+  }
+}
+
+.ti-bar {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: #E50914;
+}
+
+.ti-chevron {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0;
+  transition: background 0.1s;
+
+  &:hover { background: rgba(255, 255, 255, 0.08); }
+}
+
+.ti-chevron-icon {
+  color: #555;
+  font-size: 13px !important;
+}
+
+.ti-chevron-empty {
+  display: inline-block;
+  width: 10px;
+}
+
+.ti-name {
+  flex: 1;
+  margin-left: 6px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: inherit;
+  transition: color 0.08s;
+
+  .ti-row:hover & { color: #ffffff; }
+}
+
+.ti-input {
+  flex: 1;
+  margin-left: 6px;
+  height: 22px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  background: #1e1e1e;
+  border: 1px solid rgba(229, 9, 20, 0.5);
+  border-radius: 4px;
+  color: #e5e5e5;
+  outline: none;
+  padding: 0 6px;
+}
+
+.ti-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-left: 6px;
+
+  &.icon-title .ti-icon-symbol { color: #dc1175; }
+  &.icon-season .ti-icon-symbol { color: #2b93c1; }
+  &.icon-episode .ti-icon-symbol { color: #80247d; }
+}
+
+.ti-icon-symbol {
+  font-size: 13px !important;
+}
+
+.ti-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+}
+
+.ti-action-btn {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  color: #555;
+  transition: color 0.12s, background 0.12s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ccc;
+  }
+
+  .material-icons {
+    font-size: 14px;
+  }
+
+  &--delete:hover {
+    color: #ef4444;
+  }
+}
+

@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "element-required-attributes": "off",
+    "wcag/h37": "off",
+    "attr-case": "off"
+  }
+}

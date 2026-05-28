@@ -1,0 +1,101 @@
+<div class="tree-panel">
+  <div class="panel-header">
+    <div class="panel-label-row">
+      <span class="panel-label">MY LIBRARY</span>
+      <span class="title-count">{{ service.tree().length }} titles</span>
+    </div>
+
+    <div class="panel-actions">
+      <button
+        type="button"
+        class="panel-action-btn"
+        [class.panel-action-btn--active]="editMode"
+        (click)="toggleEditMode()"
+        [attr.aria-label]="editMode ? 'Done editing' : 'Edit mode'"
+      >
+        <i class="material-icons">{{ editMode ? 'close' : 'tune' }}</i>
+      </button>
+      <button
+        type="button"
+        class="panel-action-btn"
+        (click)="toggleAll()"
+        aria-label="Collapse or expand all"
+      >
+        <i class="material-icons">unfold_more</i>
+      </button>
+    </div>
+
+    <div class="search-wrapper">
+      <i class="material-icons search-icon">search</i>
+
+      <input
+        type="text"
+        placeholder="Search…"
+        class="search-input"
+        aria-label="Search library"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearch($event)"
+      />
+
+      @if (searchQuery()) {
+        <button type="button" class="search-clear" (click)="clearSearch()">
+          <i class="material-icons">close</i>
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="tree-scroll" role="tree">
+    @if (filteredTree().length > 0) {
+      @for (node of filteredTree(); track node.id) {
+        <app-tree-item
+          [node]="node"
+          [depth]="0"
+          [expandedIds]="expandedIds()"
+          [selectedId]="selectedId"
+          [searchActive]="!!searchQuery()"
+          [editMode]="editMode"
+          (nodeSelected)="onSelect($event)"
+          (nodeToggled)="onToggle($event)"
+          (nodeAdd)="onAdd($event)"
+          (nodeDelete)="onDelete($event)"
+          (nodeRename)="onRename($event)"
+        />
+      }
+    } @else {
+      <div class="empty-search">
+        <i class="material-icons empty-icon">search_off</i>
+        <p class="empty-title">No results</p>
+        <p class="empty-sub">
+            Nothing matched <strong>"{{ searchQuery() }}"</strong>
+        </p>
+      </div>
+    }
+  </div>
+
+  <div class="panel-footer">
+    <button type="button" class="add-title-btn" (click)="onAddTitle()">
+      <i class="material-icons">add</i>
+      Add a Title
+    </button>
+  </div>
+
+  @if (showModal()) {
+    <app-add-node-modal
+      [nodeType]="modalNodeType()"
+      [defaultNumber]="modalDefaultNumber()"
+      [defaultName]="modalDefaultName()"
+      (confirmed)="onAddConfirmed($event)"
+      (dismissed)="onAddDismissed()"
+    />
+  }
+
+  @if (showConfirm()) {
+    <app-confirm-modal
+      [title]="confirmTitle()"
+      [message]="confirmMessage()"
+      (confirmed)="onDeleteConfirmed()"
+      (dismissed)="onDeleteDismissed()"
+    />
+  }
+</div>

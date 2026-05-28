@@ -1,0 +1,36 @@
+<div class="hero-banner">
+  <img [src]="heroImg()" [alt]="node().name" class="hero-img" (error)="onImgError($event)">
+  <div class="hero-gradient-left"></div>
+  <div class="hero-gradient-bottom"></div>
+
+  <div class="hero-content">
+    @if (parentTitle()) {
+      <p class="network-label">{{ parentTitle()!.name }}</p>
+    }
+
+    <h1 class="hero-title">{{ node().name }}</h1>
+
+    <div class="stats-row">
+      @if (meta('seasonCount'); as sc) {
+        <span class="stat-text">{{ sc }} Seasons</span>
+      }
+    </div>
+
+    <div class="cta-row">
+      <p-button class="btn-play">
+        <i class="material-icons">play_arrow</i>
+        Play
+      </p-button>
+      <p-button class="btn-info">
+        <i class="material-icons">info</i>
+        More Info
+      </p-button>
+      <p-button [rounded]="true" [outlined]="true" class="btn-circle" ariaLabel="Like">
+        <i class="material-icons">thumb_up</i>
+      </p-button>
+      <p-button [rounded]="true" [outlined]="true" class="btn-circle" ariaLabel="Add to list">
+        <i class="material-icons">check</i>
+      </p-button>
+    </div>
+  </div>
+</div>
